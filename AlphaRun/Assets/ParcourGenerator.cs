@@ -16,7 +16,9 @@ public class ParcourGenerator : MonoBehaviour
 
     void Start()
     {
-        lastSpawnPosition = cube.transform.position + cube.transform.forward * spawnDistance;
+        lastSpawnPosition.x = 0;
+        lastSpawnPosition.y = 0;
+        lastSpawnPosition.z = 0;
 
         // Spawn initial platforms
         for (int i = 0; i < 5; i++)
@@ -38,16 +40,19 @@ public class ParcourGenerator : MonoBehaviour
 
     void SpawnNextPlatform()
     {
-        // Add some slight randomness in position (left/right or up/down)
-        Vector3 offset = new Vector3(
-            Random.Range(-0.5f, 0.5f), // Left/right wobble
-            0,
-            spacing + Random.Range(-0.2f, 0.2f) // Slight random forward spacing
-        );
 
-        Vector3 spawnPos = lastSpawnPosition + offset;
+        lastSpawnPosition.x += spawnDistance;
+
+        Vector3 spawnPos = lastSpawnPosition;
 
         GameObject platform = Instantiate(platformPrefab, spawnPos, Quaternion.identity);
+
+        Moving movingScript = platform.GetComponent<Moving>();
+        if (movingScript != null)
+        {
+            movingScript.Initialize(cube.transform); // or ARCamera.transform
+        }
+
         spawnedPlatforms.Enqueue(platform);
         lastSpawnPosition = spawnPos;
 
