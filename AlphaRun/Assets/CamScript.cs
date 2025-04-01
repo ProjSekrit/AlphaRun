@@ -16,7 +16,7 @@ public class GameScript : MonoBehaviour
         sessionOrigin.transform.position -= cameraOffset;
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         

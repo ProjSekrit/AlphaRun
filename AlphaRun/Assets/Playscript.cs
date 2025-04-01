@@ -23,7 +23,7 @@ void Start()
 
 public void scoreup()
 {
-    if (!isReady) return; // 🛑 Ignore early calls
+    if (!isReady) return; 
 
     score++;
     if (score > highScore)

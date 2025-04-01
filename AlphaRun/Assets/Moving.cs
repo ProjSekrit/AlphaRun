@@ -10,7 +10,7 @@ public class Moving : MonoBehaviour
 
     void Start()
     {
-        // Optional: Move towards player if needed
+        
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
@@ -22,7 +22,7 @@ public class Moving : MonoBehaviour
     {
         if (!shouldMove) return;
 
-        // Default movement: move backward (toward player direction)
+        
         transform.Translate(Vector3.back * speed * Time.deltaTime);
     }
 }

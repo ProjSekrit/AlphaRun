@@ -3,18 +3,18 @@ using UnityEngine.SceneManagement;
 
 public class Obstacle : MonoBehaviour
 {
-    public float destroyDelay = 5f; // Auto-destroy after it passes the player (optional)
+    public float destroyDelay = 20f; 
 
     void Start()
     {
-        // Optional: destroy obstacle after a few seconds
+
         Destroy(gameObject, destroyDelay);
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision collision)
     {
-            Debug.Log("💥 Player hit by obstacle!");
-            SceneManager.LoadSceneAsync(1);
-
+        if(collision.gameObject.name == "Player"){
+            SceneManager.LoadScene(1);
+        }
     }
 }
