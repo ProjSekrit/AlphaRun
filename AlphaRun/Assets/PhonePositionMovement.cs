@@ -1,44 +1,32 @@
 using UnityEngine;
-using System.Collections;
 
-
-public class PhonePositionMovement : MonoBehaviour
+public class PhoneMovement : MonoBehaviour
 {
-    public Transform arCamera;         // Assign your AR Camera in the Inspector
-    public float sensitivity = 1f;
-    public float laneWidth = 1.5f;
-    public float smoothSpeed = 5f;
+    public float moveSpeed = 5f; // Adjust speed as needed
+    public float smoothing = 0.1f; // Smooth movement for a better experience
 
-    private Vector3 initialCameraPos;
-    private Vector3 targetPos;
+    private Vector3 targetPosition; // The position the cube will move to
+    private Vector3 velocity = Vector3.zero;
 
-void Start()
-{
-    initialCameraPos = arCamera.position;
-}
-
-
-
-
-
-
+    void Start()
+    {
+        // Initialize the target position to the current position
+        targetPosition = transform.position;
+    }
 
     void Update()
     {
-        // Calculate movement based on how far the phone moved since start
-        float deltaX = (arCamera.position.x - initialCameraPos.x) * sensitivity;
-        float deltaY = (arCamera.position.y - initialCameraPos.y) * sensitivity;
+        // Get phone's accelerometer input (X and Y axis)
+        float moveX = Input.acceleration.x; // Left-Right movement (X axis)
+        float moveY = Input.acceleration.y; // Up-Down movement (Y axis)
 
-        // Snap to nearest lane on X axis
-        float snappedX = Mathf.Round(deltaX / laneWidth) * laneWidth;
-        snappedX = Mathf.Clamp(snappedX, -laneWidth, laneWidth);
+        // Move the player based on the accelerometer values
+        targetPosition.x += moveX * moveSpeed * Time.deltaTime;
+        targetPosition.y += moveY * moveSpeed * Time.deltaTime;
 
-        // Y only goes up
-        float moveY = Mathf.Max(0f, deltaY);
-
-        // Target position updates smoothly
-        targetPos = new Vector3(snappedX, moveY, 0f);
-        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPos, smoothSpeed * Time.deltaTime);
+        // Smoothly move the player toward the target position
+        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothing);
     }
 }
+
 
