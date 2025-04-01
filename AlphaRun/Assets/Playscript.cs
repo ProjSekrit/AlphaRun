@@ -9,31 +9,38 @@ public class Playscript : MonoBehaviour
     public int score = 0;
     private int highScore = 0;
 
-    void Start()
+private bool isReady = false;
+
+void Start()
+{
+    score = 0;
+    UpdateUI();
+    highScore = PlayerPrefs.GetInt("HighScore", 0);
+    UpdateUI();
+
+    isReady = true;
+}
+
+public void scoreup()
+{
+    if (!isReady) return; // 🛑 Ignore early calls
+
+    score++;
+    if (score > highScore)
     {
-        // Load saved high score
-        highScore = PlayerPrefs.GetInt("HighScore", 0);
-        UpdateUI();
+        highScore = score;
+        PlayerPrefs.SetInt("HighScore", highScore);
+        PlayerPrefs.Save();
     }
 
-    public void scoreup()
-    {
-        score++;
+    UpdateUI();
+}
 
-        if (score > highScore)
-        {
-            highScore = score;
-            PlayerPrefs.SetInt("HighScore", highScore); // Save new high score
-            PlayerPrefs.Save();
-        }
-
-        UpdateUI();
-    }
 
     void UpdateUI()
     {
         scoreText.text = "Score: " + score;
-        highScoreText.text = "High Score: " + highScore;
+        highScoreText.text = "High_Score: " + highScore;
     }
 }
 
