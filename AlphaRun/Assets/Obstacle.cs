@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Obstacle : MonoBehaviour
 {
@@ -15,12 +16,7 @@ public class Obstacle : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("💥 Player hit by obstacle!");
-
-            // TODO: Trigger your game over / damage logic
-            // Example: other.GetComponent<PlayerHealth>().TakeDamage();
-
-            // Optional: Destroy obstacle on collision
-            // Destroy(gameObject);
+            SceneManager.LoadSceneAsync(1);
         }
     }
 }
